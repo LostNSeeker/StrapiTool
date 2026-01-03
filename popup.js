@@ -16,9 +16,12 @@ const testConnectionBtn = document.getElementById('testConnection');
 // Configuration inputs
 const strapiUrlInput = document.getElementById('strapiUrl');
 const apiTokenInput = document.getElementById('apiToken');
+const collectionTypeInput = document.getElementById('collectionType');
 
-// Hardcoded collection type
-const COLLECTION_TYPE = 'ck-blog';
+// Function to get current collection type
+function getCollectionType() {
+  return collectionTypeInput ? collectionTypeInput.value : 'ck-blog';
+}
 
 // Utility functions
 function showStatus(message, type) {
@@ -52,16 +55,20 @@ function resetForm() {
 }
 
 // Load saved configuration
-chrome.storage.local.get(['strapiUrl', 'apiToken'], (result) => {
+chrome.storage.local.get(['strapiUrl', 'apiToken', 'collectionType'], (result) => {
   if (result.strapiUrl) strapiUrlInput.value = result.strapiUrl;
   if (result.apiToken) apiTokenInput.value = result.apiToken;
+  if (result.collectionType && collectionTypeInput) {
+    collectionTypeInput.value = result.collectionType;
+  }
 });
 
 // Save configuration
 saveConfigBtn.addEventListener('click', () => {
   const config = {
     strapiUrl: strapiUrlInput.value.trim(),
-    apiToken: apiTokenInput.value.trim()
+    apiToken: apiTokenInput.value.trim(),
+    collectionType: collectionTypeInput ? collectionTypeInput.value : 'ck-blog'
   };
   
   if (!config.strapiUrl || !config.apiToken) {
@@ -90,9 +97,10 @@ testConnectionBtn.addEventListener('click', async () => {
   }
   
   try {
+    const collectionType = getCollectionType();
     const endpoints = [
-      `${config.strapiUrl}/api/${COLLECTION_TYPE}s`,
-      `${config.strapiUrl}/api/${COLLECTION_TYPE}`
+      `${config.strapiUrl}/api/${collectionType}s`,
+      `${config.strapiUrl}/api/${collectionType}`
     ];
     
     let success = false;
@@ -666,9 +674,10 @@ async function createDraftInStrapi() {
     console.log('Data being sent to Strapi:', JSON.stringify(blogData, null, 2));
     
     // Make API request to Strapi
+    const collectionType = getCollectionType();
     const endpoints = [
-      `${config.strapiUrl}/api/${COLLECTION_TYPE}s`,
-      `${config.strapiUrl}/api/${COLLECTION_TYPE}`
+      `${config.strapiUrl}/api/${collectionType}s`,
+      `${config.strapiUrl}/api/${collectionType}`
     ];
     
     let validEndpoint = null;
