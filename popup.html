@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 480px;
+      min-height: 500px;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+      color: #1d1d1f;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      min-height: 500px;
+    }
+
+
+    .content {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .config-section {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s ease;
+    }
+
+    .config-section:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .config-section h3 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1d1d1f;
+      letter-spacing: -0.3px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #1d1d1f;
+      font-size: 13px;
+      letter-spacing: -0.1px;
+    }
+
+    input[type="text"], 
+    input[type="password"], 
+    input[type="url"], 
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #d2d2d7;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-family: inherit;
+      background: white;
+      transition: all 0.2s ease;
+      color: #1d1d1f;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    input::placeholder {
+      color: #86868b;
+    }
+
+    small {
+      color: #86868b;
+      font-size: 11px;
+      display: block;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      letter-spacing: -0.1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #f5f5f7;
+      color: #1d1d1f;
+      margin-top: 10px;
+      border: 1px solid #d2d2d7;
+    }
+
+    .btn-secondary:hover {
+      background: #e8e8ed;
+      border-color: #a1a1a6;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+
+    .file-input-label {
+      display: block;
+      padding: 24px 20px;
+      background: #ffffff;
+      border: 2px dashed #667eea;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      color: #667eea;
+      font-size: 14px;
+    }
+
+    .file-input-label:hover {
+      background: #f8f9fa;
+      border-color: #764ba2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .file-name {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #86868b;
+      word-break: break-all;
+      padding: 8px 12px;
+      background: #f5f5f7;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .status {
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .status.success {
+      background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status.error {
+      background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .status.info {
+      background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .preview {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #e9ecef;
+      padding: 16px;
+      border-radius: 10px;
+      background: white;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .metadata-preview {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #e9ecef;
+    }
+
+    .metadata-preview strong {
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
+
+    .upload-section {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <!-- Configuration Section -->
+      <div class="config-section" id="configSection">
+        <h3>Strapi Configuration</h3>
+        <div class="form-group">
+          <label>Strapi Base URL</label>
+          <input type="url" id="strapiUrl" placeholder="https://your-strapi.com or http://localhost:1337" />
+          <small>Enter your Strapi server URL (without /api)</small>
+        </div>
+        <div class="form-group">
+          <label>API Token</label>
+          <input type="password" id="apiToken" placeholder="Your Strapi API token" />
+          <small>Create an API token in Strapi: Settings → API Tokens → Create new API Token</small>
+        </div>
+        <button class="btn-secondary" id="saveConfig">Save Configuration</button>
+        <button class="btn-secondary" id="testConnection" style="margin-top: 10px;">Test Connection</button>
+      </div>
+
+      <!-- Upload Section -->
+      <div class="upload-section" id="uploadSection">
+        <div class="section-title">Upload Document</div>
+        <div class="file-input-wrapper">
+          <input type="file" id="docxFile" accept=".docx" />
+          <label for="docxFile" class="file-input-label">
+            Click to select DOCX file
+          </label>
+        </div>
+        <div class="file-name" id="fileName"></div>
+      </div>
+
+      <!-- Preview Section -->
+      <div id="previewSection" class="hidden">
+        <div class="section-title">Extracted Metadata</div>
+        <div class="metadata-preview" id="metadataPreview"></div>
+      </div>
+
+      <!-- Status Message -->
+      <div id="status" class="status hidden"></div>
+      
+      <!-- Loading Indicator -->
+      <div id="loading" class="loading hidden"></div>
+    </div>
+  </div>
+
+  <script src="mammoth.browser.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
